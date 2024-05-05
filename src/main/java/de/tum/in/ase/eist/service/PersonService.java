@@ -38,22 +38,40 @@ public class PersonService {
     }
 
     public Person addParent(Person person, Person parent) {
-        // TODO: Implement
-        return null;
+        if (person.getParents().size() >= 2) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Person already has 2 parents");
+        }
+        person.getParents().add(parent);
+        return save(person);
     }
 
     public Person addChild(Person person, Person child) {
-        // TODO: Implement
-        return null;
+        if (child.getParents().size() >= 2) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Child already has 2 parents");
+        }
+        person.getChildren().add(child);
+        return save(person);
     }
 
     public Person removeParent(Person person, Person parent) {
-        // TODO: Implement
-        return null;
+        if (person.getParents().size() <= 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Person must have at least 1 parent");
+        }
+        boolean removeSucceed = person.getParents().remove(parent);
+        if (!removeSucceed) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Remove parent unsuccessfully, person doesn't have this parent");
+        }
+        return save(person);
     }
 
     public Person removeChild(Person person, Person child) {
-        // TODO: Implement
-        return null;
+        if (child.getParents().size() <= 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Child must have at least 2 parents");
+        }
+        boolean removeSucceed = person.getChildren().remove(child);
+        if (!removeSucceed) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Remove child unsuccessfully, person doesn't have this child");
+        }
+        return save(person);
     }
 }
