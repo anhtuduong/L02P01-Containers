@@ -106,6 +106,6 @@ class PersonServiceTest {
         person.setFirstName(firstName);
         person.setLastName(lastName);
         person.setBirthday(LocalDate.now());
-        return personService.save(person);
+        return personRepository.save(person);
     }
 }
